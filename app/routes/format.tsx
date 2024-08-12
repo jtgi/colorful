@@ -1,24 +1,8 @@
 import { useState, useEffect } from "react";
 import * as htmlToImage from "html-to-image";
-
 import Editor from "react-simple-code-editor";
-import Prism from "prismjs";
-import "prismjs/components/prism-markup-templating";
-import "prismjs/components/prism-python";
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-java";
-import "prismjs/components/prism-csharp";
-import "prismjs/components/prism-ruby";
-import "prismjs/components/prism-php";
-import "prismjs/components/prism-go";
-import "prismjs/components/prism-rust";
-import "prismjs/components/prism-swift";
-import "prismjs/components/prism-typescript";
-import "prismjs/components/prism-scala";
-import "prismjs/components/prism-sql";
-import "prismjs/components/prism-jsx";
-import "prismjs/components/prism-tsx";
-import "prismjs/components/prism-cshtml";
+import hljs from "highlight.js";
+import "highlight.js/styles/default.css";
 
 import { ClientOnly } from "remix-utils/client-only";
 import { LoaderFunctionArgs } from "@remix-run/node";
@@ -51,7 +35,7 @@ export default function Screen() {
   const [code, setCode] = useState(codeBlock || "// Go ahead, write some code");
 
   const [language, setLanguage] = useState(detectLanguage(codeBlock));
-  const [theme, setTheme] = useState("prism-tomorrow");
+  const [theme, setTheme] = useState("xcode-min");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [codeHeight, setCodeHeight] = useState(300);
 
@@ -74,52 +58,39 @@ export default function Screen() {
     "html",
   ];
   const themes = new Map([
-    ["prism-dark", "Dark"],
-    ["prism-okaidia", "Okaidia"],
-    ["prism-twilight", "Twilight"],
-    ["prism-solarizedlight", "Solarized Light"],
-    ["prism-tomorrow", "Tomorrow"],
-    ["prism-funky", "Funky"],
+    ["xcode-min", "Warpcast"],
+    ["github-dark", "GitHub Dark"],
+    ["github-light", "GitHub Light"],
+    ["monokai", "Monokai"],
+    ["vs", "Visual Studio"],
+    ["atom-one-dark", "Atom One Dark"],
+    ["atom-one-light", "Atom One Light"],
   ]);
 
   useEffect(() => {
     // Dynamically load the selected theme's CSS
     const link = document.createElement("link");
-    link.href = `https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/${theme}.min.css`;
+    link.href = `https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/${theme}.min.css`;
     link.rel = "stylesheet";
     link.type = "text/css";
 
     // Remove previously loaded theme
-    const prevTheme = document.querySelector("link[data-prism-theme]");
+    const prevTheme = document.querySelector("link[data-hljs-theme]");
     if (prevTheme) {
       prevTheme.remove();
     }
 
-    link.setAttribute("data-prism-theme", "");
+    link.setAttribute("data-hljs-theme", "");
     document.head.appendChild(link);
 
-    Prism.highlightAll();
+    hljs.highlightAll();
   }, [theme]);
 
   useEffect(() => {}, [language]);
 
   function detectLanguage(code: string) {
-    if (code.includes("def ") || code.includes("import ")) return "python";
-    if (code.includes("public class ") || code.includes("System.out.println")) return "java";
-    if (code.includes("Console.WriteLine")) return "csharp";
-    if (code.includes("#include <iostream>")) return "cpp";
-    if (code.includes("puts ") || code.includes("def ")) return "ruby";
-    if (code.includes("<?php")) return "php";
-    if (code.includes("func ") && code.includes("package ")) return "go";
-    if (code.includes("fn ") && code.includes("let mut ")) return "rust";
-    if (code.includes("import Foundation")) return "swift";
-    if (code.includes("interface ") || code.includes("let ")) return "typescript";
-    if (code.includes("object ") && code.includes("def ")) return "scala";
-    if (code.includes("SELECT ") || code.includes("FROM ")) return "sql";
-    if (code.includes("JSX.Element") || code.includes("React.FC")) return "tsx";
-    if (code.includes("<>") || code.includes("React.")) return "jsx";
-    if (code.includes("<!DOCTYPE html>") || code.includes("<html>")) return "html";
-    return "javascript";
+    const result = hljs.highlightAuto(code);
+    return result.language || "javascript";
   }
 
   const handleCodeChange = (newCode: string) => {
@@ -169,22 +140,24 @@ export default function Screen() {
       <div id="codeblock">
         <div
           className={`border rounded-lg overflow-hidden ${theme} shadow-lg`}
-          style={{
-            background: isDarkMode ? "#1e1e1e" : "#ffffff",
-            color: isDarkMode ? "#d4d4d4" : "#000000",
-          }}
+          style={
+            {
+              // background: isDarkMode ? "#1e1e1e" : "#ffffff",
+              // color: isDarkMode ? "#d4d4d4" : "#000000",
+            }
+          }
         >
           <ClientOnly>
             {() => (
               <Editor
                 value={code}
                 onValueChange={handleCodeChange}
-                highlight={(code) => Prism.highlight(code, Prism.languages[language], language)}
+                highlight={(code) => hljs.highlight(code, { language }).value}
                 padding={20}
                 style={{
                   fontFamily: '"Fira code", "Fira Mono", monospace',
                   fontSize: 14,
-                  // height: `${codeHeight}px`,
+                  height: `${codeHeight}px`,
                   background: "transparent",
                 }}
                 className="w-full"
