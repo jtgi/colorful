@@ -11,16 +11,24 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.2",
+    "@heroicons/react": "^2.1.5",
     "@remix-run/node": "^2.11.1",
     "@remix-run/react": "^2.11.1",
     "@remix-run/serve": "^2.11.1",
+    "@types/prismjs": "^1.26.4",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@uiw/react-textarea-code-editor": "^3.0.2",
     "highlight.js": "^11.10.0",
+    "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
     "isbot": "^4.1.0",
+    "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-syntax-highlighter": "^15.5.0"
+    "react-simple-code-editor": "^0.14.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "remix-utils": "^7.6.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.11.1",

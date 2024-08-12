@@ -6,7 +6,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   return json({
     type: "form",
-    title: "gm",
+    title: "Pretty",
     url: `${hostUrl}/format?state=${data.untrustedData.state}`,
   });
 }
