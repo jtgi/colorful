@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
-  const path = `${process.env.DATA_DIR}/uploads/${id}.png`;
+  const path = `${process.env.DATA_DIR}/uploads/${id}`;
 
   try {
     const file = await fs.readFile(`${process.cwd()}${path}`);
