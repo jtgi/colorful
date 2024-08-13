@@ -13,7 +13,7 @@ export default function Index() {
     <div
       className="flex flex-col gap-4 h-screen w-screen items-center justify-center"
       style={{
-        animation: "rainbow 0.5s linear infinite",
+        animation: "rainbow 5s linear infinite",
       }}
     >
       <img src="/apple-touch-icon.png" className="animate-bounce" />
