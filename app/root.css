@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'MonSans';
+  src: url('/monaspace.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'MonSans', sans-serif;
+}

@@ -6,7 +6,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const pngData = data.imageDataUrl.replace(/^data:image\/png;base64,/, "");
 
-  const path = `/public/uploads/img_${new Date().toISOString()}.png`;
+  const path = `${process.env.DATA_DIR}/uploads/img_${new Date().toISOString()}.png`;
   await fs.writeFile(`${process.cwd()}${path}`, pngData, "base64");
 
   return json({

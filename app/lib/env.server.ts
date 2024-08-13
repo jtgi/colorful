@@ -1,1 +1,1 @@
-export const hostUrl = process.env.DEV_URL || "http://localhost:3000";
+export const hostUrl = process.env.NODE_ENV === "production" ? process.env.PROD_URL : process.env.DEV_URL;
