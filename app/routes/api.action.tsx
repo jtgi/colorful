@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json } from "@remix-run/node";
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import { hostUrl } from "~/lib/env.server";
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -9,4 +9,18 @@ export async function action({ request }: ActionFunctionArgs) {
     title: "Colorful",
     url: `${hostUrl}/format?state=${data.untrustedData.state}`,
   });
+}
+
+export async function loader() {
+  return {
+    type: "composer",
+    name: "Colorful",
+    icon: "image",
+    description: "Create code snippets",
+    aboutUrl: hostUrl,
+    imageUrl: `${hostUrl}/apple-touch-icon.png`,
+    action: {
+      type: "post",
+    },
+  };
 }
