@@ -35,7 +35,7 @@ export default function Screen() {
   const [code, setCode] = useState(codeBlock || "// Go ahead, write some code");
 
   const [language, setLanguage] = useState<string | undefined>();
-  const [theme, setTheme] = useState("atom-one-light");
+  const [theme, setTheme] = useState("atom-one-dark");
   const [codeHeight, setCodeHeight] = useState<number | undefined>();
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
   const [fontSize, setFontSize] = useState(16.875);
