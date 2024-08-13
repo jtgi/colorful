@@ -9,6 +9,7 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 import { hostUrl } from "~/lib/env.server";
 import { useLoaderData } from "@remix-run/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { useDarkMode } from "~/components/dark-mode";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -35,7 +36,8 @@ export default function Screen() {
   const [code, setCode] = useState(codeBlock || "// Go ahead, write some code");
 
   const [language, setLanguage] = useState<string | undefined>();
-  const [theme, setTheme] = useState("atom-one-dark");
+  const { isDarkMode } = useDarkMode();
+  const [theme, setTheme] = useState(isDarkMode ? "atom-one-dark" : "atom-one-light");
   const [codeHeight, setCodeHeight] = useState<number | undefined>();
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
   const [fontSize, setFontSize] = useState(16.875);
@@ -136,7 +138,7 @@ export default function Screen() {
   };
 
   return (
-    <div className="p-4 max-w-4xl mx-auto flex flex-col gap-4">
+    <div className={`p-4 max-w-4xl mx-auto flex flex-col gap-4`}>
       <div id="codeblock">
         <div className={`rounded-lg overflow-hidden ${theme} shadow-lg`}>
           <ClientOnly>
@@ -165,11 +167,13 @@ export default function Screen() {
       <div className="mb-4">
         <button
           onClick={() => setIsCustomizationOpen(!isCustomizationOpen)}
-          className="flex items-center justify-between w-full px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+          className="flex items-center justify-between w-full px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
         >
-          <span>Customize</span>
+          <span className="dark:text-white">Customize</span>
           <ChevronDownIcon
-            className={`h-5 w-5 transform transition-transform ${isCustomizationOpen ? "rotate-180" : ""}`}
+            className={`h-5 w-5 transform transition-transform ${
+              isCustomizationOpen ? "rotate-180" : ""
+            } dark:text-white`}
           />
         </button>
         <div
@@ -177,17 +181,20 @@ export default function Screen() {
             isCustomizationOpen ? "max-h-96" : "max-h-0"
           }`}
         >
-          <div className="p-4 bg-gray-50 rounded-md">
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-md">
             <div className="flex gap-x-4 mb-4">
               <div className="w-full">
-                <label htmlFor="language-select" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="language-select"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Language
                 </label>
                 <select
                   id="language-select"
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="block w-full px-2 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
+                  className="block w-full px-2 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-gray-700 dark:text-gray-300"
                 >
                   <option value={""}>Auto Detect</option>
                   {languages.map((lang) => (
@@ -199,7 +206,10 @@ export default function Screen() {
               </div>
               <div className="w-full">
                 <div className="flex justify-between items-center mb-1">
-                  <label htmlFor="theme-select" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="theme-select"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
                     Theme
                   </label>
                 </div>
@@ -207,7 +217,7 @@ export default function Screen() {
                   id="theme-select"
                   value={theme}
                   onChange={(e) => setTheme(e.target.value)}
-                  className="block w-full px-2 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none"
+                  className="block w-full px-2 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none text-gray-700 dark:text-gray-300"
                 >
                   {Array.from(themes).map(([value, label]) => (
                     <option key={value} value={value}>
@@ -218,7 +228,10 @@ export default function Screen() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <label htmlFor="height-slider" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="height-slider"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Height
               </label>
               <input
@@ -228,11 +241,14 @@ export default function Screen() {
                 max="800"
                 value={codeHeight}
                 onChange={(e) => setCodeHeight(parseInt(e.target.value))}
-                className="w-full bg-slate-600 text-slate-600"
+                className="w-full bg-purple-500 text-purple-500"
               />
             </div>
             <div className="flex items-center gap-2 mt-4">
-              <label htmlFor="font-size-slider" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="font-size-slider"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Font Size
               </label>
               <input
@@ -242,9 +258,9 @@ export default function Screen() {
                 max="24"
                 value={fontSize}
                 onChange={(e) => setFontSize(parseInt(e.target.value))}
-                className="w-full bg-slate-600 text-slate-600"
+                className="w-full bg-purple-500 text-purple-500"
               />
-              <span className="text-sm text-gray-600">{fontSize}px</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">{fontSize}px</span>
             </div>
           </div>
         </div>

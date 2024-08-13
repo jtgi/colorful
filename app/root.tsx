@@ -2,6 +2,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/reac
 import "./tailwind.css";
 import "./root.css";
 import { LinksFunction } from "@remix-run/node";
+import { DarkModeProvider, useDarkMode } from "./components/dark-mode";
 
 export const links: LinksFunction = () => [
   {
@@ -37,7 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <DarkModeProvider>{children}</DarkModeProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -46,5 +47,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const { isDarkMode } = useDarkMode();
+  return (
+    <div className={isDarkMode ? "dark" : ""}>
+      <Outlet />
+    </div>
+  );
 }
