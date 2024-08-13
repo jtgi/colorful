@@ -38,7 +38,7 @@ export default function Screen() {
   const [theme, setTheme] = useState("atom-one-light");
   const [codeHeight, setCodeHeight] = useState<number | undefined>();
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
-  const [fontSize, setFontSize] = useState(14);
+  const [fontSize, setFontSize] = useState(16.875);
 
   const languages = [
     "typescript",
