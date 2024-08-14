@@ -167,14 +167,14 @@ export default function Screen() {
   const [theme, setTheme] = useState(isDarkMode ? "atom-one-dark" : "atom-one-light");
   const [height, setHeight] = useState<number | undefined>();
   const [fontSize, setFontSize] = useState(16.875);
-  const [isLoading, setIsLoading] = useState(false); // New loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   const pattern = /(?:```|\.\.\.)([\s\S]*?)(?:```|\.\.\.)/;
   const codeBlockMatch = state.cast.text.match(pattern);
   const initialCode = codeBlockMatch ? codeBlockMatch[1].trim() : "// Go ahead, write some code";
 
   const handleFinish = async () => {
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true);
     const node = document.querySelector("#codeblock");
     if (!node) return;
 
@@ -186,7 +186,7 @@ export default function Screen() {
       body: JSON.stringify({ imageDataUrl: dataUrl }),
     });
 
-    setIsLoading(false); // Reset loading state after upload attempt
+    setIsLoading(false);
 
     if (!response.ok) throw new Error("Failed to upload image");
 
@@ -234,9 +234,9 @@ export default function Screen() {
         className={`px-4 py-2 ${isLoading ? "bg-gray-400" : "bg-purple-500"} text-white rounded-md hover:${
           isLoading ? "" : "bg-purple-600"
         } transition-colors`}
-        disabled={isLoading} // Disable button when loading
+        disabled={isLoading}
       >
-        {isLoading ? "Embedding..." : "Embed"} {/* Show spinner when loading */}
+        {isLoading ? "Embedding..." : "Embed"}
       </button>
     </div>
   );
