@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
+import { ActionFunctionArgs, json } from "@remix-run/node";
 import { hostUrl } from "~/lib/env.server";
 
 export async function action({ request }: ActionFunctionArgs) {
