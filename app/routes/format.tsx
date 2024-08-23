@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from "react";
 import * as htmlToImage from "html-to-image";
@@ -37,7 +38,7 @@ function CodeEditor(props: CodeEditorProps) {
 
   return (
     <div id="codeblock">
-      <div className={`rounded-lg overflow-hidden ${theme} shadow-lg`}>
+      <div className={`rounded-lg overflow-hidden ${theme} shadow-xl`}>
         <ClientOnly>
           {() => (
             <div className="hljs">
@@ -47,8 +48,8 @@ function CodeEditor(props: CodeEditorProps) {
                 highlight={(code) => hljs.highlightAuto(code, language ? [language] : undefined).value}
                 padding={20}
                 style={{
-                  fontFamily: '"MonSans", monospace',
-                  fontSize: `${fontSize}px`,
+                  // fontFamily: '"MonSans", monospace',
+                  // fontSize: `${fontSize}px`,
                   height: height ? `${height}px` : undefined,
                 }}
                 className="w-full"
@@ -61,7 +62,6 @@ function CodeEditor(props: CodeEditorProps) {
   );
 }
 
-// This should be moved to a separate file, e.g., `app/components/CustomizationPanel.tsx`
 interface CustomizationPanelProps {
   language: string | undefined;
   setLanguage: (lang: string) => void;
@@ -168,6 +168,8 @@ export default function Screen() {
   const [height, setHeight] = useState<number | undefined>();
   const [fontSize, setFontSize] = useState(16.875);
   const [isLoading, setIsLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   const pattern = /(?:```|\.\.\.)([\s\S]*?)(?:```|\.\.\.)/;
   const codeBlockMatch = state.cast.text.match(pattern);
@@ -184,6 +186,11 @@ export default function Screen() {
     await htmlToImage.toCanvas(node as HTMLElement);
     const canvas = await htmlToImage.toCanvas(node as HTMLElement);
     const dataUrl = canvas.toDataURL("image/png");
+
+    if (process.env.NODE_ENV === "development") {
+      setImagePreview(dataUrl);
+    }
+
     const response = await fetch("/api/upload-image", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -212,10 +219,12 @@ export default function Screen() {
       },
       "*"
     );
+
+    setImagePreviewUrl(url);
   };
 
   return (
-    <div className="p-4 max-w-4xl mx-auto flex flex-col gap-4">
+    <div className="p-4 max-w-4xl mx-auto flex flex-col gap-4 mt-8">
       <CodeEditor
         initialCode={initialCode}
         language={language}
@@ -242,6 +251,12 @@ export default function Screen() {
       >
         {isLoading ? "Embedding..." : "Embed"}
       </button>
+      {state.cast.text.includes("jtgitest") && (
+        <>
+          {imagePreview && <img src={imagePreview} alt="Preview" />}
+          {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" />}
+        </>
+      )}
     </div>
   );
 }
