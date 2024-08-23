@@ -178,6 +178,10 @@ export default function Screen() {
     const node = document.querySelector("#codeblock");
     if (!node) return;
 
+    // bug fix: for react native web view on ios
+    // without calling toCanvas twice it renders blank.
+    // ty: warpcast.com/haole
+    await htmlToImage.toCanvas(node as HTMLElement);
     const canvas = await htmlToImage.toCanvas(node as HTMLElement);
     const dataUrl = canvas.toDataURL("image/png");
     const response = await fetch("/api/upload-image", {
