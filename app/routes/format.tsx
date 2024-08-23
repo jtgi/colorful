@@ -155,8 +155,8 @@ function CustomizationPanel(props: CustomizationPanelProps) {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
-  const state = JSON.parse(decodeURIComponent(url.searchParams.get("state") ?? ""));
-  console.log({ rawState: url.searchParams.get("state"), parsedState: state });
+  const rawState = url.searchParams.get("state");
+  const state = JSON.parse(rawState ?? "{}");
   return { state, hostUrl };
 }
 
@@ -173,7 +173,7 @@ export default function Screen() {
   const pattern = /(?:```|:::)([\s\S]*?)(?:```|:::)/;
   const codeBlockMatch = state.cast.text.match(pattern);
 
-  const initialCode = codeBlockMatch[1] ? toAscii(codeBlockMatch[1].trim()) : "// Go ahead, write some code";
+  const initialCode = codeBlockMatch ? toAscii(codeBlockMatch[1].trim()) : "// Go ahead, write some code";
 
   const handleFinish = async () => {
     setIsLoading(true);
