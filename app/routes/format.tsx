@@ -22,7 +22,7 @@ interface CodeEditorProps {
 }
 
 function CodeEditor(props: CodeEditorProps) {
-  const { initialCode, language, theme, height } = props;
+  const { initialCode, language, fontSize, theme, height } = props;
   const [code, setCode] = useState(initialCode);
 
   useEffect(() => {
@@ -48,8 +48,8 @@ function CodeEditor(props: CodeEditorProps) {
                 highlight={(code) => hljs.highlightAuto(code, language ? [language] : undefined).value}
                 padding={20}
                 style={{
-                  // fontFamily: '"MonSans", monospace',
-                  // fontSize: `${fontSize}px`,
+                  fontFamily: '"MonSans", monospace',
+                  fontSize: `${fontSize}px`,
                   height: height ? `${height}px` : undefined,
                 }}
                 className="w-full"
