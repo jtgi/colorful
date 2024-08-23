@@ -156,6 +156,7 @@ function CustomizationPanel(props: CustomizationPanelProps) {
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const state = JSON.parse(decodeURIComponent(url.searchParams.get("state") ?? ""));
+  console.log({ rawState: url.searchParams.get("state"), parsedState: state });
   return { state, hostUrl };
 }
 
@@ -173,6 +174,7 @@ export default function Screen() {
 
   const pattern = /(?:```|\.\.\.)([\s\S]*?)(?:```|\.\.\.)/;
   const codeBlockMatch = state.cast.text.match(pattern);
+  console.log({ codeBlockMatch });
   const initialCode = codeBlockMatch ? codeBlockMatch[1].trim() : "// Go ahead, write some code";
 
   const handleFinish = async () => {
@@ -251,12 +253,6 @@ export default function Screen() {
       >
         {isLoading ? "Embedding..." : "Embed"}
       </button>
-      {state.cast.text.includes("jtgitest") && (
-        <>
-          {imagePreview && <img src={imagePreview} alt="Preview" />}
-          {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" />}
-        </>
-      )}
     </div>
   );
 }

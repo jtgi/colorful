@@ -4,6 +4,8 @@ import { hostUrl } from "~/lib/env.server";
 export async function action({ request }: ActionFunctionArgs) {
   const data = await request.json();
 
+  console.log({ action: data.untrustedData.state });
+
   return json({
     type: "form",
     title: "Colorful",
