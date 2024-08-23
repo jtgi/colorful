@@ -180,7 +180,7 @@ export default function Screen() {
 
     // bug fix: for react native web view on ios
     // without calling toCanvas twice it renders blank.
-    // ty: warpcast.com/haole
+    // ty: haole#3346
     await htmlToImage.toCanvas(node as HTMLElement);
     const canvas = await htmlToImage.toCanvas(node as HTMLElement);
     const dataUrl = canvas.toDataURL("image/png");
