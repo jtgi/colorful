@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { json, type ActionFunctionArgs, type MetaFunction } from "@remix-run/node";
+import { type MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
